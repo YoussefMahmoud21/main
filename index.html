@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Chunks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('background.png'); /* Added background image */
+            background-size: cover; /* Ensure the background covers the entire page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        #arabic, #english {
+            font-size: 36px;
+            margin: 20px;
+            text-align: center;
+        }
+        #countdown {
+            font-size: 24px;
+            margin: 10px;
+        }
+        #score {
+            font-size: 24px;
+            margin: 10px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #group-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #chunk-game {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Group selection screen -->
+    <div id="group-selection">
+        <h2>Select a group:</h2>
+        <button onclick="selectGroup('chunk1')">Group 1</button>
+        <button onclick="selectGroup('chunk2')">Group 2</button>
+        <button onclick="selectGroup('chunk3')">Group 3</button>
+        <button onclick="selectGroup('chunk4')">Group 4</button>
+        <button onclick="selectGroup('chunk5')">Group 5</button>
+    </div>
+
+    <!-- Chunk game screen -->
+    <div id="chunk-game">
+        <div id="arabic"></div>
+        <div id="countdown">5</div>
+        <div id="english" style="visibility: hidden;"></div>
+        <div id="score">Score: 0</div> <!-- Score display -->
+
+        <button id="nextBtn">Next</button>
+        <button id="backBtn" onclick="backToSelection()">Back</button>
+    </div>
+
+    <!-- Add sounds -->
+    <audio id="beep" src="beep.mp3"></audio>
+    <audio id="showTranslationSound" src="showTranslation.mp3"></audio> <!-- Sound for showing translation -->
+    <audio id="clickSound" src="click.mp3"></audio> <!-- Sound for button clicks -->
+
+    <script>
+        // Data structures for English-Arabic chunks for different groups
+        const chunk1 = [
+            {"arabic": "الوقت يجري", "english": "Time flies"},
+            {"arabic": "انهو واجبي", "english": "it’s my duty"},
+            {"arabic": "نقطه جيده", "english": "that’s good point"},
+            {"arabic": "هيا بنا نبدا", "english": "lets get started"},
+            {"arabic": "يبدو جيدا", "english": "sounds good"},
+            {"arabic": "لا اقصد الاهانه", "english": "no offense"},
+            {"arabic": "لا تخذلني", "english": "don’t let me down"},
+            {"arabic": "خيبت ظني", "english": "you disappoint me"},
+            {"arabic": "لا تقلق بشأن ذلك", "english": "don’t sweat it"},
+            {"arabic": "اصبح الوقت متأخرا", "english": "it’s getting late"},
+            {"arabic": "اوقف التحديق بي", "english": "stop staring at me"},
+            {"arabic": "لم يخطر علي بالي ابدا", "english": "it never crossed my mind"},
+            {"arabic": "حظ موفق", "english": "good luck"},
+            {"arabic": "حظ موفق", "english": "break a leg"},
+            {"arabic": "لا اكثر ولا اقل", "english": "no more no less"},
+            {"arabic": "لا تكن وقحا معي", "english": "don’t sass me"},
+            {"arabic": "لا تكن بخيلا", "english": "don’t be stingy"},
+            {"arabic": "لابد انك تمزح", "english": "you must be joking"},
+            {"arabic": "انت تضحكني كثيرا", "english": "you crack me up"},
+            {"arabic": "لدي شئ لأخبرك به", "english": "i've got something to tell you"},
+            {"arabic": "بعيش وأواجه", "english": "live and kicking"},
+            {"arabic": "الوقت سرقني", "english": "i lost track of time"},
+            {"arabic": "لا تهتم", "english": "never mind"},
+            {"arabic": "لا تصرخ في وجهي", "english": "don’t yell at me"},
+            {"arabic": "لو لم تخونني ذاكرتي", "english": "if memory serves"},
+            {"arabic": "تمالك نفسك", "english": "pull yourself together"},
+            {"arabic": "احترم نفسك", "english": "behave yourself."},
+            {"arabic": "انت بتتسبب بمشكله كبير", "english": "you are making a big mistake"},
+            {"arabic": "لقد تجاوزت حدودك", "english": "you are out of line"},
+            {"arabic": "لدي شئ لأخبرك به", "english": "i've got something to tell you"},
+            {"arabic": "جربها", "english": "give it a try"},
+            {"arabic": "جيد حتى الآن", "english": "so far so good"},
+            {"arabic": "انا اتحمل كامل المسؤليه", "english": "i will take a full responsibility"},
+            {"arabic": "ما تخصصك", "english": "what is your major?"},
+            {"arabic": "انا مش في المود", "english": "i am not in the mood"},
+            {"arabic": "في رمشة عين", "english": "in the blink of an eye"},
+            {"arabic": "تذكر كلامي", "english": "mark my words"},
+            {"arabic": "مع كامل احترامي", "english": "with all due respect"},
+            {"arabic": "اثبت مكانك", "english": "stay still"},
+            {"arabic": "انت قرأت افكاري", "english": "you read my mind"},
+            {"arabic": "لا تلومني", "english": "don’t blame me"},
+            {"arabic": "سأعوض لك ذلك", "english": "i will make it up to you"},
+            {"arabic": "لا تهددني", "english": "don’t threaten me"},
+            {"arabic": "لا تبالغ", "english": "don’t exaggerate"},
+            {"arabic": "بدون مقدمات", "english": "without further ado"},
+            {"arabic": "خليها لنفسك", "english": "keep it to yourself"},
+            {"arabic": "بحسن نيه", "english": "in good faith"},
+            {"arabic": "لا داعي لقول المزيد", "english": "say no more"},
+            {"arabic": "لم يفت الأوان بعد", "english": "it’s never too late"},
+            {"arabic": "هل هذا ضروري حقا", "english": "is this really necessary?"},
+            {"arabic": "لم يحدث أي مكروه", "english": "no harm done"},
+            {"arabic": "لقد فارق الحياة", "english": "he passed away"},
+            {"arabic": "يجب أن تخجل من نفسك", "english": "you should be ashamed of yourself"},
+            {"arabic": "هذا سخيف", "english": "that’s ridiculous"},
+            {"arabic": "رائحتك كريهة", "english": "you stink"},
+            {"arabic": "ضميري مرتاح", "english": "my conscience is clear"},
+            {"arabic": "لا تفقد الامل", "english": "don’t give up hope"},
+            {"arabic": "لقد سئمت من ذلك", "english": "i am fed up"},
+            {"arabic": "لقد سئمت من ذلك", "english": "i am sick of it"},
+            {"arabic": "لقد حان الوقت", "english": "it’s about time"},
+            {"arabic": "انا اؤيد الاقتراح", "english": "i second the motion"},
+            {"arabic": "لا تتظاهر بالغباء", "english": "don’t play dumb"},
+            {"arabic": "اظهر بعض الاحترام", "english": "show some respect"},
+            {"arabic": "اعتبره خلصان", "english": "consider it done"},
+            {"arabic": "الأمر لا يستحق العناء", "english": "it’s not worth it"},
+            {"arabic": "في خدمتك", "english": "at your service"},
+            {"arabic": "متسبقش الأحداث", "english": "don’t get ahead of yourself"},
+            {"arabic": "متسبقش الأحداث", "english": "don’t jump to conclusions"},
+            {"arabic": "لا تفسد هذا الأمر", "english": "don’t screw this up"},
+            {"arabic": "انا مشوش جدا", "english": "i am very confused"},
+            {"arabic": "افسح الطريق", "english": "make way"},
+            {"arabic": "كما تراه مناسبا", "english": "as you see fit"},
+            {"arabic": "ما بيدي حيله", "english": "i can’t help it"},
+            {"arabic": "انها بادره طيبه", "english": "it’s a nice gesture"},
+            {"arabic": "المظاهر خداعة", "english": "appearances can be deceiving"},
+            {"arabic": "سامحني", "english": "forgive me"},
+            {"arabic": "كلمني بالطريقه التي تحدثت بها معهم", "english": "Talk to me the way you took to them"},
+            {"arabic": "ارني ما لديك", "english": "show me what you got"},
+            {"arabic": "اين ترعرعت", "english": "where did you grow up?"},
+            {"arabic": "بدون تردد", "english": "without hesitation"},
+            {"arabic": "ماذا سأستفيد", "english": "what’s in it for me?"},
+            {"arabic": "متكبرش الموضوع", "english": "don’t make a scene"},
+            {"arabic": "انت فريد من نوعك", "english": "you are one of a kind"},
+            {"arabic": "نحن متعادلان", "english": "we are even"},
+            {"arabic": "لقد بدأ صبري ينفذ", "english": "my patience is wearing thin"},
+            {"arabic": "انظر الي الجانب المشرق", "english": "look on the bright side"},
+            {"arabic": "انت زعلان مني؟", "english": "are you mad at me?"},
+            {"arabic": "اتوسل اليك", "english": "i’m begging you"},
+            {"arabic": "انا عملتها عشانك", "english": "i did it for you"},
+            {"arabic": "هل هذا لي", "english": "is that for me?"},
+            {"arabic": "املأ تلك الاستمارة", "english": "fill out this form"},
+            {"arabic": "معنديش النيه", "english": "i have no intention"},
+            {"arabic": "انا كمان مش عارف", "english": "i don’t know either"},
+            {"arabic": "كون مستعد", "english": "be prepared"},
+            {"arabic": "استني دورك", "english": "wait your turn"},
+            {"arabic": "هل في حد هنا", "english": "is someone there?"},
+            {"arabic": "انت عايز ايه مني", "english": "what do you want from me?"},
+            {"arabic": "انت بتفكرني بنفسي", "english": "you remind me of me"},
+            {"arabic": "الحياه قصيره", "english": "life is short"},
+            {"arabic": "مرارا و تكرارا", "english": "over and over again"},
+            {"arabic": "عدنا الى نقطة البداية", "english": "back to square one"},
+            {"arabic": "انتيه لالفاظك", "english": "watch your mouth"},
+            {"arabic": "انا بالكاد عارفو", "english": "i barely know him"},
+            {"arabic": "انظر الي الجانب المشرق", "english": "look on the bright side"},
+            {"arabic": "احتاجك بجانبي", "english": "i need you by my side"},
+            {"arabic": "هذا هو العدل", "english": "fair is fair"},
+            {"arabic": "كل شئ في معاده", "english": "all in good time"},
+            {"arabic": "ايد واحده متصقفش", "english": "takes two to tango"},
+            {"arabic": "هو احنا مستنيين حد", "english": "are we waiting for someone?"},
+            {"arabic": "جهز نفسك", "english": "brace yourself"},
+            {"arabic": "أغلق فمك", "english": "zip it"},
+            {"arabic": "انا بشفق عليك", "english": "i pity you"},
+            {"arabic": "انت مجنون؟", "english": "are you insane?"},
+            {"arabic": "اسمعني بعنايه", "english": "listen to me carefully"},
+            {"arabic": "انا متحمس", "english": "i’m pumped!"},
+            {"arabic": "انا متحمس", "english": "i’m excited"},
+            {"arabic": "منذ اخر مقابلنا بيننا", "english": "since we last met"},
+            {"arabic": "اللحاق بالركب", "english": "catch up"},
+            {"arabic": "انا ممتن لك", "english": "i am grateful to you"},
+            {"arabic": "انت بتتكلم بجد", "english": "are you serious?"},
+            {"arabic": "انا متأثر", "english": "i am touched"},
+            {"arabic": "الامر مش معقد", "english": "it’s not a rocket science"},
+            {"arabic": "في العجله الندامه", "english": "haste makes waste"},
+            {"arabic": "طلباتك أوامر", "english": "your wish is my command"},
+            {"arabic": "ايه اللي بيضحك", "english": "what is so funny?"},
+            {"arabic": "احتاجك بجانبي", "english": "i need you by my side"},
+            {"arabic": "ده موضوع شخصي جدا", "english": "that’s too personal"},
+            {"arabic": "متردد ومش عارف اخد القرار", "english": "i’m on the fence"},
+            {"arabic": "انت عملت كل الي عليك", "english": "you went above and beyond"},
+            {"arabic": "انا اختلطت علي الامور", "english": "i got my wires crossed"},
+            {"arabic": "متتكلمش بأسمي نهائي", "english": "never speak on my behalf"},
+            {"arabic": "فكره كويسه بس مش اللى احنا عاوزنها", "english": "it’s a good idea but it’s not the one we would like to have"},
+            {"arabic": "بتلمح على ايه", "english": "what are you getting at?"},
+            {"arabic": "انا سرحت", "english": "i zoned out"},
+            {"arabic": "انا محتار", "english": "i am at a loss"},
+            {"arabic": "لاختصار الموضوع", "english": "to cut it short"},
+            {"arabic": "وفر كلامك", "english": "save your breath"},
+            {"arabic": "إنها مسألة وقت فقط", "english": "it’s only a matter of time"},
+            {"arabic": "حتي اشعار اخر", "english": "until further notice"},
+            {"arabic": "الدنيا دواره", "english": "life is fickle"},
+            {"arabic": "انا يسابق الزمن", "english": "i am against the clock"},
+            {"arabic": "انت في ورطة أو مأزق", "english": "you are on thin ice"},
+            {"arabic": "اقفل الموضوع", "english": "drop the subject"},
+            {"arabic": "انا غاضب", "english": "i am pissed off"},
+            {"arabic": "ليس لدي خيار", "english": "i don’t have a choice"},
+            {"arabic": "وقف عن مناداتي بذلك", "english": "stop calling me that"},
+            {"arabic": "خذني معاك", "english": "take me with you"},
+            {"arabic": "ظهري يؤلمني", "english": "my back hurts"},
+            {"arabic": "نمت اليوم كله", "english": "i slept all day"},
+            {"arabic": "مازلت احب ذالك", "english": "i still love that"},
+            {"arabic": "الاذواق تختلف", "english": "to each his own"},
+            {"arabic": "معنديش شهيه", "english": "i don’t have an appetite"},
+            {"arabic": "متعليش صوتك", "english": "don’t raise your voice"},
+            {"arabic": "انها خسارتك", "english": "it’s your loss"},
+            {"arabic": "دفعت كام لهذا", "english": "how much did you pay for this"},
+            {"arabic": "ليس هناك شك", "english": "there is no doubt at all"},
+            {"arabic": "لا تحزن", "english": "don’t be sad"},
+            {"arabic": "هو انا قلت حاجه غلط", "english": "did i say something wrong"},
+            {"arabic": "تخونني الكلمات", "english": "words fail me"},
+            {"arabic": "هدي اعصابك", "english": "chill out"},
+            {"arabic": "انا بتحداك", "english": "i challenge you"},
+            {"arabic": "ربما", "english": "perhaps"},
+            {"arabic": "توقف عن مطاردتي", "english": "stop chasing me"},
+            {"arabic": "هذا هراء", "english": "this is pullshit"},
+            {"arabic": "اخذت بنصيحتك", "english": "i took your advice"},
+            {"arabic": "اذا ما العمل الان", "english": "so, what now?"},
+            {"arabic": "بطريقة أو بأخرى", "english": "one way or another"},
+            {"arabic": "ده بره الموضوع", "english": "that’s beside the point"},
+            {"arabic": "كل واحد عندو عيوب", "english": "everyone has flaws"},
+            {"arabic": "كدت ان افعلها", "english": "i almost had it"},
+            {"arabic": "ما الذي أتى بك هنا؟", "english": "what brings you here?"},
+            {"arabic": "سمعت الكثير عنك", "english": "i’ve heard a lot about you"},
+            {"arabic": "انت فاضي انهارده", "english": "are you free tonight?"},
+            {"arabic": "هو علي الهاتف", "english": "he is on the phone"},
+            {"arabic": "اي طريق؟", "english": "which way?"},
+            {"arabic": "تبدين حزينه", "english": "you seem sad"},
+            {"arabic": "لا شئ مستحيل", "english": "nothing is impossible"},
+            {"arabic": "سوف اعود", "english": "i will be back"},
+            {"arabic": "هل يوجد شئ يحزنك", "english": "is something troubling you?"},
+            {"arabic": "هي تفهمني", "english": "are you with me?"},
+            {"arabic": "نسيت اللي كنت هقوله", "english": "i forgot what i was gonna say"},
+            {"arabic": "لم ارى شيئا كهذا من قبل", "english": "i have never seen anything like that"},
+            {"arabic": "عليك أن تسمعني", "english": "you need to listen to me"},
+            {"arabic": "لم يكن كاف", "english": "it was not sufficient"},
+            {"arabic": "خيار بديل للجميع", "english": "fallback for everyone"},
+            {"arabic": "هو يأخذ زمام المبادرة", "english": "it takes the lead"},
+            {"arabic": "كان سيعمل", "english": "it was going to work"}
+
+
+];
+        const chunk2 = [
+            {"arabic": "أين أنت؟", "english": "Where are you?"},
+            {"arabic": "ما اسمك؟", "english": "What's your name?"},
+            {"arabic": "من أنت؟", "english": "Who are you?"},
+            {"arabic": "كم عمرك؟", "english": "How old are you?"},
+            {"arabic": "أنا في المنزل", "english": "I am at home"}
+        ];
+        const chunk3 = [
+            {"arabic": "اليوم جميل", "english": "Today is beautiful"},
+            {"arabic": "أنا أدرس", "english": "I am studying"},
+            {"arabic": "أراك لاحقاً", "english": "See you later"},
+            {"arabic": "أحب القراءة", "english": "I love reading"},
+            {"arabic": "الجو حار", "english": "The weather is hot"}
+        ];
+        const chunk4 = [
+            {"arabic": "أين المطار؟", "english": "Where is the airport?"},
+            {"arabic": "أنا في المكتب", "english": "I am at the office"},
+            {"arabic": "أحتاج إلى المساعدة", "english": "I need help"},
+            {"arabic": "هل تتكلم الإنجليزية؟", "english": "Do you speak English?"},
+            {"arabic": "الطعام لذيذ", "english": "The food is delicious"}
+        ];
+        const chunk5 = [
+            {"arabic": "أين تعيش؟", "english": "Where do you live?"},
+            {"arabic": "الساعة الآن", "english": "The time is now"},
+            {"arabic": "أنا جائع", "english": "I am hungry"},
+            {"arabic": "أين المدرسة؟", "english": "Where is the school?"},
+            {"arabic": "هذا الكتاب رائع", "english": "This book is great"}
+        ];
+
+        let selectedChunks;
+        let countdownSeconds = 5;
+        let countdownInterval;
+        let score = 0; // Initialize score
+        const arabicDiv = document.getElementById('arabic');
+        const englishDiv = document.getElementById('english');
+        const countdownDiv = document.getElementById('countdown');
+        const scoreDiv = document.getElementById('score');
+        const beepSound = document.getElementById('beep');
+        const showTranslationSound = document.getElementById('showTranslationSound');
+        const clickSound = document.getElementById('clickSound');
+        let translationShown = false; // Track whether the translation has been shown
+
+        // Function to select a group
+        function selectGroup(groupName) {
+            playClickSound(); // Play click sound
+            // Select the corresponding chunk array based on the group name
+            selectedChunks = eval(groupName); // Using eval to get the variable by name
+            document.getElementById("group-selection").style.display = "none";  // Hide group selection
+            document.getElementById("chunk-game").style.display = "block";  // Show game screen
+            showNextChunk();  // Start showing the chunks
+        }
+
+        // Function to go back to the group selection screen
+        function backToSelection() {
+            playClickSound(); // Play click sound
+            document.getElementById("chunk-game").style.display = "none";  // Hide game screen
+            document.getElementById("group-selection").style.display = "block";  // Show group selection
+            clearInterval(countdownInterval);  // Stop any ongoing countdown
+            beepSound.pause();  // Stop the beep sound
+            englishDiv.style.visibility = 'hidden';  // Hide English translation when going back
+            score = 0; // Reset score when going back
+            scoreDiv.innerHTML = "Score: " + score; // Update score display
+            translationShown = false; // Reset translation shown flag
+        }
+
+        // Function to start the countdown
+        function startCountdown() {
+            countdownSeconds = 5;
+            countdownDiv.innerHTML = countdownSeconds;
+            countdownInterval = setInterval(function() {
+                countdownSeconds--;
+                countdownDiv.innerHTML = countdownSeconds;
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownInterval);
+                    showTranslation();
+                    score--; // Decrement score when timeout occurs
+                    scoreDiv.innerHTML = "Score: " + score; // Update score display
+                    translationShown = true; // Set translation shown flag
+                }
+            }, 1000);
+        }
+
+        // Function to show the translation and stop the beep sound
+        function showTranslation() {
+            beepSound.pause();  // Stop the beep sound
+            englishDiv.style.visibility = 'visible';  // Show the English translation
+            
+            // Play the show translation sound
+            showTranslationSound.currentTime = 0; // Reset sound to start
+            showTranslationSound.play();
+        }
+
+        // Function to show the next chunk
+        function showNextChunk() {
+            // Stop any ongoing countdown
+            clearInterval(countdownInterval);
+            beepSound.pause();
+
+            // Pick a random chunk from the selected group
+            const chunk = selectedChunks[Math.floor(Math.random() * selectedChunks.length)];
+            arabicDiv.innerHTML = chunk.arabic;  // Show Arabic chunk
+            englishDiv.innerHTML = chunk.english;  // Set the English translation
+            englishDiv.style.visibility = 'hidden';  // Hide the English translation
+            translationShown = false; // Reset translation shown flag
+
+            // Play beep sound
+            beepSound.currentTime = 0;  // Reset sound to start
+            beepSound.play();
+
+            // Start the countdown
+            startCountdown();
+        }
+
+        // Event listener for the "Next" button
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            playClickSound(); // Play click sound
+            if (!translationShown) { // Check if translation is not shown
+                score++; // Increment score when "Next" is clicked before timeout
+                scoreDiv.innerHTML = "Score: " + score; // Update score display
+            }
+            showNextChunk();
+        });
+
+        // Function to play click sound
+        function playClickSound() {
+            clickSound.currentTime = 0; // Reset sound to start
+            clickSound.play();
+        }
+
+        // Start the first chunk when the page loads
+        showNextChunk();
+    </script>
+
+</body>
+</html>
