@@ -55,6 +55,7 @@
         <button onclick="selectGroup('chunk4')">Group 4</button>
         <button onclick="selectGroup('chunk5')">Group 5</button>
         <button onclick="selectGroup('chunk6')">Group 6</button>
+        <button onclick="selectGroup('chunk7')">Group 7</button>
     </div>
 
     <!-- Chunk game screen -->
@@ -1260,8 +1261,98 @@
             {"arabic": "يكسر/الازمنه", "english": "Break, broke, broken."}
         ];
 
+        const chunk7 = [
+        {"arabic": "He’s trying to escape!", "english": "Quick, tie him up before he runs!"},
+        {"arabic": "I will come back tomorrow from this long trip.", "english": "Tomorrow! I can’t wait to see you."},
+        {"arabic": "Could you work overtime this week?", "english": "Yes I can, but I can’t keep doing this. It’s exhausting."},
+        {"arabic": "I think I will not be able to come tomorrow for the review meeting.", "english": "You must come. No excuses. Am I making myself clear?"},
+        {"arabic": "That woman over there is stunning!", "english": "Is she married?"},
+        {"arabic": "We need to find a way to solve this problem.", "english": "Okay, what do you have in mind?"},
+        {"arabic": "Why is everyone still outside?", "english": "I don’t know, but the concert is supposed to start in 10 minutes."},
+        {"arabic": "Why are you looking at me like that?", "english": "This may seem like an odd question, but have we met before?"},
+        {"arabic": "I’m taking all the credit for your work.", "english": "You think I’m gonna stand for this?"},
+        {"arabic": "Why are you so annoyed with your team?", "english": "Because I’m surrounded by idiots who can’t follow simple instructions!"},
+        {"arabic": "How do you explain this coincidence when you saw her?", "english": "I believe nothing happens by accident."},
+        {"arabic": "Do you think you’ll ever finish writing that book?", "english": "Yes, I will, no matter how long it takes."},
+        {"arabic": "I think I’ve finally figured out women.", "english": "Any man who says he totally understands women is a fool."},
+        {"arabic": "Quietly enters the room while you’re talking to yourself", "english": "Oh no! How long have you been standing there?"},
+        {"arabic": "Everyone knows pineapple doesn’t belong on pizza.", "english": "That’s debatable."},
+        {"arabic": "What is this news spreading about you after what you have done?", "english": "People say I’m a monster for what I have done."},
+        {"arabic": "Should we tell her about the surprise party?", "english": "No, she doesn’t have to know."},
+        {"arabic": "I broke your instructions accidentally!", "english": "Don’t lie—you deliberately disobeyed me."},
+        {"arabic": "Did I scare you?", "english": "Oh yes, I quiver with fear."},
+        {"arabic": "Are you going to argue with me again?", "english": "No, I’m gonna slap you with silence."},
+        {"arabic": "I didn’t get the job I wanted.", "english": "Life doesn’t always turn out the way you plan."},
+        {"arabic": "Are you sure you’re okay? You’ve been acting strange.", "english": "I don’t have mental problems. I’m just stressed."},
+        {"arabic": "I will check my backlog, and I will let you know when I feel free to explain the topic to you.", "english": "Don’t patronize me. I understand perfectly."},
+        {"arabic": "We’re letting you go from this job.", "english": "On what grounds?"},
+        {"arabic": "You’re being accused of stealing.", "english": "On what grounds? Do you have any evidence?"},
+        {"arabic": "What’s your decision about the offer?", "english": "I don’t know yet."},
+        {"arabic": "She told me she might leave you for me.", "english": "If she wants to be with you, that’s fine."},
+        {"arabic": "The website isn’t working again.", "english": "This is so frustrating!"},
+        {"arabic": "What if someone calls me while I’m leaving?", "english": "Ignore them. Keep on walking, don’t look back."},
+        {"arabic": "I have to admit, I was the one who made the mistake.", "english": "I appreciate your honesty."},
+        {"arabic": "I just wanted to help you through this tough time.", "english": "I appreciate everything you have done."},
+        {"arabic": "Don’t give up just yet; you can still learn!", "english": "I don’t know… I feel like I’m a hopeless case."},
+        {"arabic": "I believe you didn't lose hope, did you?", "english": "Have you ever felt hopeless in your life?"},
+        {"arabic": "Are you going to try for the scholarship at Microsoft?", "english": "I want to, but I feel it’s so much out of my reach."},
+        {"arabic": "You didn’t even notice how she was looking at you.", "english": "I was not blind—I just didn’t want to react."},
+        {"arabic": "Bumps into someone while texting", "english": "Hey! Are you blind?"},
+        {"arabic": "You’re always following me and bothering me.", "english": "Can’t you find someone else to harass?"},
+        {"arabic": "Knocks on the door during a meeting", "english": "Sorry to interrupt. Is this a bad time?"},
+        {"arabic": "I’m really sorry for what I said yesterday.", "english": "Your apology is not accepted."},
+        {"arabic": "Why did you yell at me in front of everyone?", "english": "I apologize. I shouldn’t have done that."},
+        {"arabic": "Did you hear that Sarah is moving to a new city?", "english": "What? Why am I always the last to know?"},
+        {"arabic": "How many tickets do you need?", "english": "Two, no more, no less."},
+        {"arabic": "I told you, but I might’ve mentioned it to Sam, too.", "english": "Wait, who else knows about this?"},
+        {"arabic": "You seem nervous. What’s on your mind?", "english": "I’ve got something to tell you, and it’s important."},
+        {"arabic": "Should I bring up what happened last week?", "english": "No, let sleeping dogs lie."},
+        {"arabic": "I can’t stop crying!", "english": "Pull yourself together. We need to focus right now."},
+        {"arabic": "I don’t think you’re making the right choices in your life.", "english": "How dare you judge me?"},
+        {"arabic": "We need volunteers to help with the project.", "english": "But what possible difference can I make?"},
+        {"arabic": "I heard you’ve been married for a long time.", "english": "Yes, but when you were married, did you ever feel lonely?"},
+        {"arabic": "Grabs keys and heads toward the door", "english": "Where are you off to?"},
+        {"arabic": "Are you okay? You look sweaty.", "english": "Yeah, I’m just wiping my forehead."},
+        {"arabic": "If I break the rules you will not notice that", "english": "It's not true. I’m onto you."},
+        {"arabic": "Isn’t the next one where you need to get off?", "english": "No, this is my stop."},
+        {"arabic": "How are we going to climb over this wall?", "english": "Give me a boost, and I’ll pull you up."},
+        {"arabic": "I will take this from you!", "english": "Oh yeah? You want a piece of me?"},
+        {"arabic": "Can you please pay attention to what I’m saying?", "english": "I’ve tried, but it’s like talking to a wall."},
+        {"arabic": "Why do you look upset with your manager?", "english": "Because he judged me before he even knows me."},
+        {"arabic": "You look really tense today. How do you usually get out of this mood?", "english": "You know, when I’m stressed out, my mom tells me jokes to cheer me up."},
+        {"arabic": "Why are you talking so fast?", "english": "This line is tapped, so I must be brief."},
+        {"arabic": "I didn’t think the car was going to swerve like that.", "english": "Are you serious? You could’ve been killed in that accident!"},
+        {"arabic": "When I fell into this problem, I didn't know how to act.", "english": "You could have called me."},
+        {"arabic": "Sorry for being late, but why did you start without me?", "english": "You told me you’d not be able to come because of traffic. That’s what I thought you said."},
+        {"arabic": "First clean up the dishes", "english": "Sure. After I finish, what should I do next?"},
+        {"arabic": "I’m so hungry, but I don’t have time to cook.", "english": "Don’t worry. I brought you some breakfast."},
+        {"arabic": "Why are you accusing me of stealing?", "english": "I haven’t done anything wrong!"},
+        {"arabic": "Did you win the race?", "english": "No, but I did my best, and I got second."},
+        {"arabic": "Will try to sneak inside this abandoned house", "english": "Really! What do you think you are going?"},
+        {"arabic": "No, you tell me first where you were last night.", "english": "No I asked first!"},
+        {"arabic": "Why do I have to stay here?", "english": "This is for your protection."},
+        {"arabic": "Are you okay? You look pale.", "english": "I’m feeling a little nauseous."},
+        {"arabic": "I swear I don't know where the criminal is.", "english": "You know we can arrest you for obstructing an ongoing investigation, right?"},
+        {"arabic": "Why were you staring at me this morning while I was sleeping?", "english": "Because you were talking in your sleep last night."},
+        {"arabic": "I think I can understand the animals.", "english": "I know it sounds crazy, but I swear it’s true!"},
+        {"arabic": "Why are you upset with me after telling them this secret?", "english": "Because I trusted you! I told you things I have never told anyone."},
+        {"arabic": "Did the presentation make sense to you?", "english": "Absolutely! The way you explained that concept was amazing. You have a way with words."},
+        {"arabic": "Why are you still helping me after everything you’ve done?", "english": "I’m doing that because I feel guilty, and because I pity you."},
+        {"arabic": "Do you like this new TV show?", "english": "At first, I wasn’t sure, but now it’s growing on me."},
+        {"arabic": "You lied to me about where you were last night!", "english": "Okay, okay, I admit it. The jig is up."},
+        {"arabic": "You're such a loser!", "english": "What did you just call me?"},
+        {"arabic": "The enemy is approaching!", "english": "Quick, pick up your weapon!"},
+        {"arabic": "I’ve decided to cancel your project without telling you.", "english": "You have no right to do that!"},
+        {"arabic": "We’ve been stuck in this situation for weeks now.", "english": "Let’s end this nightmare and solve it today."},
+        {"arabic": "I don’t understand why the meeting is so important.", "english": "Let me put it this way: If you miss it, you might lose your job."},
+        {"arabic": "How bad is the situation with the project?", "english": "The project isn’t going well. Let me put it this way—if we don’t meet the deadline, we could lose the client."},
+        {"arabic": "I’ll only work with you if you follow my rules.", "english": "Who are you to dictate the terms?"},
+        {"arabic": "I’ve been working hard, but I still haven’t seen any results.", "english": "Don’t worry. Good things come to those who wait."},
+        {"arabic": "I’ve been using this wheelchair since I was a child.", "english": "Have you been in a wheelchair your entire life?"}
+        ];
+
         let selectedChunks;
-        let countdownSeconds = 5;
+        let countdownSeconds = 7;
         let countdownInterval;
         let score = 0; // Initialize score
         const arabicDiv = document.getElementById('arabic');
@@ -1298,7 +1389,7 @@
 
         // Function to start the countdown
         function startCountdown() {
-            countdownSeconds = 5;
+            countdownSeconds = 7;
             countdownDiv.innerHTML = countdownSeconds;
             countdownInterval = setInterval(function() {
                 countdownSeconds--;
