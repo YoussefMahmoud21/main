@@ -56,6 +56,7 @@
         <button onclick="selectGroup('chunk5')">Group 5</button>
         <button onclick="selectGroup('chunk6')">Group 6</button>
         <button onclick="selectGroup('chunk7')">Group 7</button>
+        <button onclick="selectGroup('chunk8')">Group 8</button>
     </div>
 
     <!-- Chunk game screen -->
@@ -1351,8 +1352,76 @@
         {"arabic": "I’ve been using this wheelchair since I was a child.", "english": "Have you been in a wheelchair your entire life?"}
         ];
 
+
+        const chunk8 = [
+        {"arabic": "Why are you keeping that old chair? It's broken!", "english": "Because one man's trash is another man's treasure."},
+        {"arabic": "You should quit procrastinating.", "english": "I know, but I said it before and I will say it again: it's hard to manage my time."},
+        {"arabic": "Enjoy your time with your kids while they're young.", "english": "You're right. Life moves pretty fast."},
+        {"arabic": "I just called you five minutes ago!", "english": "yah I know so, how did you get here so fast?"},
+        {"arabic": "You got a new job in Paris?", "english": "Yes, and that sounds exciting, doesn't it?"},
+        {"arabic": "He told her she failed because she's not smart enough.", "english": "That's harsh. He shouldn't have said that."},
+        {"arabic": "After weeks of rain, the sun is finally out.", "english": "That's great! Things are looking up."},
+        {"arabic": "That woman over there is stunning!", "english": "I agree. Is she married?"},
+        {"arabic": "Your daughter hasn't answered her phone for two hours?", "english": "Don't worry. There is no reason to panic, I promise you she is fine."},
+        {"arabic": "You think success is easy?", "english": "No, I know success isn’t always straightforward; sometimes things are more than they appear."},
+        {"arabic": "How do you handle being around flowers all the time?", "english": "I've gotten used to the reality that, despite my allergies, I am a gardener."},
+        {"arabic": "Did your family afford this house?", "english": "No. I didn't inherit anything from my family."},
+        {"arabic": "You are loved, no matter what.", "english": "Thank you. I won't ever forget that, not for a second."},
+        {"arabic": "I'll help you with your project if you promise to help me later.", "english": "Deal. Let's make a deal, just between you and me."},
+        {"arabic": "If you keep criticizing me like this, you'll break my confidence.", "english": "I'm sorry. I don't want to make you hate yourself."},
+        {"arabic": "Do You expect me to believe that lie?", "english": "No, of course not. Do I look that stupid?"},
+        {"arabic": "Why are you all dressed up?", "english": "I have an event to attend. Are you going somewhere too?"},
+        {"arabic": "Are you sure you can fix the car?", "english": "I'll try, but I have never done that before."},
+        {"arabic": "The couple at the door seems to know you.", "english": "Yes, they are my parents. Are those your parents too?"},
+        {"arabic": "You keep calling her, but she doesn’t answer.", "english": "I know. She’s not interested in me anymore. Wake up and smell the coffee; it’s time to move on."},
+        {"arabic": "I'm tired of this job. I can't take it anymore.", "english": "I understand. Do you want to quit your job?"},
+        {"arabic": "Can you please tell me what you saw that made you upset?", "english": "it doesn't matter, I saw what I saw."},
+        {"arabic": "You look exhausted. Have you been home lately?", "english": "No, I haven't been home for four days."},
+        {"arabic": "You seem out of shape lately.", "english": "I know. I haven't been in the gym for four days."},
+        {"arabic": "You want to blend in with them?", "english": "Yes, I'm going to pretend like I look like one of them."},
+        {"arabic": "Will you be back early tonight?", "english": "No, don’t wait up for me."},
+        {"arabic": "I think the idea of taking a break is good", "english": "Yes, you have a point there."},
+        {"arabic": "What happened to the soldiers in the battle?", "english": "Unfortunately, they are all dead."},
+        {"arabic": "Do you agree that this decision is for the best?", "english": "Absolutely, I couldn't agree more."},
+        {"arabic": "What do you think about this solution?", "english": "That's the ticket!"},
+        {"arabic": "How did you notice the issue so quickly?", "english": "I'm very perceptive."},
+        {"arabic": "Have you ever been in a relationship?", "english": "No, I have never had a girlfriend before."},
+        {"arabic": "We decided to keep silence about what is going on in Gaza", "english": "I can't believe how selfish you all are."},
+        {"arabic": "Will this take a long time?", "english": "No, this will just take a second."},
+        {"arabic": "I feel untalented compared to others.", "english": "Don’t say that. Everyone has a talent."},
+        {"arabic": "What do you think about their suggestion?", "english": "I will adopt that idea."},
+        {"arabic": "Do you agree with their reasoning?", "english": "Yeah, that's true."},
+        {"arabic": "Can you help me with this task?", "english": "Sorry, you are on your own."},
+        {"arabic": "Shall we call someone to fix it?", "english": "No, I will do it myself."},
+        {"arabic": "Should I tell  them my opoinion about Gaza", "english": "No ever, don't rock the boat."},
+        {"arabic": "Should I ignore the consequences?", "english": "No, you need to face the music."},
+        {"arabic": "Are you excited about the trip?", "english": "Yes, I’m so psyched!"},
+        {"arabic": "You had something for me, right?", "english": "Oh, I nearly forgot, this is for you."},
+        {"arabic": "How long have you known about this plan?", "english": "I have known about it for too long"},
+        {"arabic": "Do you ever get tired of hearing the same complaints?", "english": "Yes, do you know how many times I've heard this?"},
+        {"arabic": "Why do you wear glasses now?", "english": "I had an operation a couple years ago on my eyes."},
+        {"arabic": "Where is your grandfather now?", "english": "He died a couple years ago."},
+        {"arabic": "How can I ever repay you for your advice?", "english": "Thank you for your guidance and wisdom."},
+        {"arabic": "Do you realize who you are challenging?", "english": "You don't know who you are dealing with."},
+        {"arabic": "How long will this game continue?", "english": "I don't know how long this match is gonna last."},
+        {"arabic": "Can we enter the building now?", "english": "No, nobody gets in or out."},
+        {"arabic": "Do you mind waiting for a while?", "english": "No, I don't mind waiting."},
+        {"arabic": "Why does everyone seem so tense?", "english": "No need for consternation. Everything is under control."},
+        {"arabic": "What do you know about Gehan?", "english": "There's no use asking me about it, because I don't know anything.."},
+        {"arabic": "Can we examine this issue more carefully?", "english": "Yes, let's take a closer look."},
+        {"arabic": "Did you catch him stealing?", "english": "Yes, I caught him red-handed."},
+        {"arabic": "Why did you reveal the secret?", "english": "sorry but I have a big mouth."},
+        {"arabic": "Thanks for comming for the dinner", "english": "your welcome and thank you for having me."},
+        {"arabic": "What is life about for you?", "english": "Learning from your mistakes and moving forward—that’s what life is about."},
+        {"arabic": "Why did you help Gaza so much?", "english": "Because I have a big heart and I'm brave."},
+        {"arabic": "I don't mean anything by it , but you will lose because they are more qualified than you", "english": "bro!, Don't be so negative."},
+        {"arabic": "Let me play one match to punsih you", "english": "Look who's talking."},
+        {"arabic": "I feel like you don't love me anymore", "english": "Really!, ok let me pud it this way, No one will ever love you like I do."},
+        {"arabic": "Baby you got me all wrong let me explain", "english": "Really!, I caught you red-handed."}
+        ];
+
         let selectedChunks;
-        let countdownSeconds = 7;
+        let countdownSeconds = 8;
         let countdownInterval;
         let score = 0; // Initialize score
         const arabicDiv = document.getElementById('arabic');
@@ -1389,7 +1458,7 @@
 
         // Function to start the countdown
         function startCountdown() {
-            countdownSeconds = 7;
+            countdownSeconds = 8;
             countdownDiv.innerHTML = countdownSeconds;
             countdownInterval = setInterval(function() {
                 countdownSeconds--;
